@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.b434adf1.css",
+    "main.js": "/static/js/main.15fa5e61.js",
+    "static/media/chess_logo.png": "/static/media/chess_logo.fe68cbb7729adfaf3ae7.png",
+    "index.html": "/index.html",
+    "main.b434adf1.css.map": "/static/css/main.b434adf1.css.map",
+    "main.15fa5e61.js.map": "/static/js/main.15fa5e61.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b434adf1.css",
+    "static/js/main.15fa5e61.js"
+  ]
+}

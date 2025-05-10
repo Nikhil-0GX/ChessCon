@@ -1,0 +1,269 @@
+/* src/index.css */
+
+/* FONT IMPORTS (from index.html, but good to note here)
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');
+*/
+
+:root {
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Roboto Slab', serif; /* More classic for headings */
+
+  /* Timing for transitions */
+  --transition-speed-fast: 0.2s;
+  --transition-speed-medium: 0.3s;
+  --transition-speed-slow: 0.5s;
+  --easing-standard: ease-in-out;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-speed-medium) var(--easing-standard), 
+              color var(--transition-speed-medium) var(--easing-standard);
+  line-height: 1.6; /* Default line height for readability */
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+/* ---- LIGHT THEME: "Scholarly Parchment" ---- */
+body[data-theme="light"] {
+  /* Palette: Warm off-whites, rich browns, deep blues, muted gold/greens */
+  --bg-primary: #fdf6e3; /* Parchment background */
+  --bg-secondary: #fffcf2; /* Slightly cleaner off-white for cards */
+  --bg-tertiary: #e8e0d0; /* Muted accent for sidebars or distinct sections */
+  --bg-header: #f8f3e9;   /* Header a bit distinct from primary */
+  --bg-sidebar: #f1eadc;
+  --bg-card-news: #fffdf7; /* Specific background for News cards if needed */
+
+  --text-primary: #3a2e27;    /* Dark, rich brown */
+  --text-secondary: #604f42;  /* Lighter brown */
+  --text-accent: #00407A;     /* Deep "ink" blue for titles/accents */
+  --text-on-accent: #fdf6e3;  /* Parchment on accent bg */
+
+  --border-color: #d4c8b4;    /* Sepia-like border */
+  --border-color-strong: #bcaea0; /* Stronger border for emphasis */
+
+  --card-shadow: 0 3px 6px rgba(58, 46, 39, 0.07), 0 5px 15px rgba(58, 46, 39, 0.1);
+  --card-hover-shadow: 0 5px 10px rgba(58, 46, 39, 0.1), 0 8px 20px rgba(58, 46, 39, 0.15);
+  
+  --brand-primary: #005a8D;    /* Primary action blue (darker for contrast) */
+  --brand-secondary: #8c7851; /* Muted gold/brown accent */
+  --brand-highlight: #b58900; /* Solarized Yellow/Gold for highlights */
+  --link-color: #0056b3;     /* A good readable link blue */
+  --link-color-inline: #0069d9; /* Slightly brighter for inline text links */
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #a59379; /* Muted brown scrollbar thumb */
+    border-radius: 10px;
+    border: 2px solid var(--bg-primary); /* Parchment border around thumb */
+  }
+  *::-webkit-scrollbar-track {
+    background: #e8e0d0; /* Lighter track */
+  }
+  scrollbar-color: #a59379 #e8e0d0;
+}
+
+/* src/index.css */
+
+/* ---- LIGHT THEME: "Scholarly Parchment" ---- */
+body[data-theme="light"] {
+  /* ... existing variables ... */
+  --brand-primary-rgb: 0, 90, 141;     /* For --brand-primary: #005a8D */
+  --brand-secondary-rgb: 40, 167, 69;  /* Example success green */
+  --brand-highlight-rgb: 220, 53, 69;  /* Example error red */
+  /* ... */
+}
+
+/* ---- DARK THEME: "Glassmorphic Aurora Night" ---- */
+body[data-theme="dark"] {
+  /* ... existing variables ... */
+  --brand-primary-rgb: 121, 192, 255;  /* For --brand-primary: #79c0ff */
+  --brand-secondary-rgb: 107, 227, 160;/* Example success mint/green for dark theme */
+  --brand-highlight-rgb: 247, 120, 186;/* For --brand-highlight: #F778BA (or a more distinct error red if preferred) */
+  /* ... */
+}
+/* ---- DARK THEME: "Glassmorphic Aurora Night" ---- */
+body[data-theme="dark"] {
+  /* Palette: Deep space blues, ethereal purples, glowing cyans, subtle pinks */
+  --bg-primary: #0d1117; /* Very dark blue, almost black (GitHub Dark) */
+  /* Aurora background for primary - apply to a ::before pseudo-element or a wrapper */
+  /* This requires JS or specific component styling for the animated gradient */
+  
+  --bg-secondary: rgba(22, 27, 34, 0.75);  /* Translucent card background (Glassmorphism base) */
+  --bg-tertiary: rgba(30, 36, 44, 0.6);    /* Slightly different translucency */
+  --bg-header: rgba(13, 17, 23, 0.85);    /* Header with more opacity or solid dark */
+  --bg-sidebar: rgba(18, 22, 29, 0.8);
+  --bg-card-news: rgba(25, 30, 38, 0.8);
+
+  --text-primary: #c9d1d9;     /* Light grey/off-white (GitHub Dark) */
+  --text-secondary: #8b949e;   /* Medium grey (GitHub Dark) */
+  --text-accent: #58a6ff;      /* Bright blue for titles (GitHub Dark) */
+  --text-on-accent: #0d1117;   /* Dark text on bright blue buttons */
+
+  --border-color: rgba(139, 148, 158, 0.2); /* Translucent border for glass effect */
+  --border-color-strong: rgba(139, 148, 158, 0.4);
+
+  --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2); /* Soft, diffused shadow */
+  --card-hover-shadow: 0 10px 40px 0 rgba(40, 48, 150, 0.25);
+  
+  /* Aurora-inspired accent colors */
+  --brand-primary: #79c0ff;    /* Bright Sky Blue (primary action) */
+  --brand-secondary: #A377FF;  /* Ethereal Purple */
+  --brand-highlight: #F778BA;  /* Neon Pink/Magenta */
+  --link-color: #79c0ff;      /* Sky Blue for links */
+  --link-color-inline: #94D3FF; /* Lighter blue for inline */
+
+  /* For Glassmorphism on cards (apply to --bg-secondary, --bg-tertiary etc.) */
+  /* backdrop-filter: blur(10px); - apply this in styled-components if needed */
+  /* -webkit-backdrop-filter: blur(10px); */
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #484f58; /* GitHub Dark scrollbar thumb */
+    border-radius: 10px;
+    border: 2px solid var(--bg-primary);
+  }
+  *::-webkit-scrollbar-track {
+    background: rgba(30, 36, 44, 0.3);
+  }
+  scrollbar-color: #484f58 rgba(30, 36, 44, 0.3);
+}
+
+/* Apply base background and text colors */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+/* General Styling for Links and Headings */
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500; /* Make links slightly bolder */
+  transition: color var(--transition-speed-fast) var(--easing-standard),
+              opacity var(--transition-speed-fast) var(--easing-standard);
+}
+a:hover {
+  color: var(--brand-highlight);
+  opacity: 0.85;
+  text-decoration: none; /* Keep no underline or add a subtle one */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-secondary);
+  color: var(--text-accent);
+  margin-top: 0;
+  margin-bottom: 0.75em; /* Consistent bottom margin for headings */
+  line-height: 1.3;
+}
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.2rem; } /* Page titles */
+h3 { font-size: 1.7rem; } /* Card titles / Section subheadings */
+h4 { font-size: 1.3rem; }
+
+@media (max-width: 768px) {
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.8rem; }
+  h3 { font-size: 1.4rem; }
+  h4 { font-size: 1.1rem; }
+}
+
+/* Utility for centering content in pages */
+.page-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 1rem;
+  }
+}
+
+/* Framer Motion Page Transition Helper */
+.page-motion-div {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* --- ENGAGING ELEMENTS (Add to specific components or globally) --- */
+
+/* Button Styling - Example for a primary action button */
+.chesscon-button-primary {
+  background-color: var(--brand-primary);
+  color: var(--text-on-accent);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color var(--transition-speed-fast) var(--easing-standard),
+              transform var(--transition-speed-fast) var(--easing-standard),
+              box-shadow var(--transition-speed-fast) var(--easing-standard);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.chesscon-button-primary:hover {
+  background-color: var(--brand-highlight);
+  color: var(--bg-primary); /* Ensure text contrast on hover for some themes */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.chesscon-button-primary:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+/* Optional: Aurora background effect for dark theme body */
+/* This is more complex and best applied with JS or directly on a full-page wrapper for performance */
+/* body[data-theme="dark"]::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(120deg, 
+    hsla(220, 80%, 20%, 0.7), 
+    hsla(270, 70%, 15%, 0.6), 
+    hsla(190, 80%, 25%, 0.5)
+  );
+  animation: aurora-flow 20s ease-in-out infinite alternate;
+  z-index: -1; // Behind content
+  opacity: 0.6; // Soften it
+}
+
+@keyframes aurora-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+} */
+
+/* Glassmorphism for cards in dark theme - apply this to card components using styled-components */
+/*
+  Example for a card component in styled-components:
+  const Card = styled.div`
+    background: var(--bg-secondary); // This is your translucent rgba color
+    ${props => props.theme.activeTheme === 'dark' && `
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-color); // Translucent border
+    `}
+    // ... other card styles
+  `;
+*/
