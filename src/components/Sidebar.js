@@ -1,93 +1,75 @@
-import React, { useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import { NavLink, useLocation } from 'react-router-dom';
+// src/components/Sidebar.js
+import React from "react";
+import styled, { css } from "styled-components";
+import { NavLink } from "react-router-dom";
 import {
-  FaHome, FaGraduationCap, FaTrophy, FaNewspaper, FaUsers,
-  FaQuestionCircle, FaPuzzlePiece, FaBroadcastTower, FaCog, FaEnvelope
-} from 'react-icons/fa';
+  FaHome, FaGraduationCap, FaTrophy, FaNewspaper, FaPuzzlePiece,
+  FaBroadcastTower, FaUsers, FaQuestionCircle, FaCog, FaEnvelope
+} from "react-icons/fa";
 
 const SidebarContainer = styled.aside`
   width: 250px;
-  background-color: var(--bg-sidebar);
-  padding: 1.5rem 0;
+  background: var(--bg-sidebar, #181c24);
+  color: var(--text-secondary, #b0b8c1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 2000;
+  transform: translateX(${props => (props.open ? "0" : "-100%")});
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 2px 0 12px rgba(0,0,0,0.15);
+
+  @media (min-width: 900px) {
+    position: static;
+    transform: none;
+    box-shadow: none;
+    height: auto;
+  }
+`;
+
+const SidebarHeader = styled.div`
   display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  position: sticky;
-  top: 70px;
-  height: calc(100vh - 70px);
-  overflow-y: auto;
-  border-right: 1px solid var(--border-color);
-  transition: transform 0.3s ease-in-out, 
-              background-color var(--transition-speed-medium) var(--easing-standard);
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem 1rem 1.5rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--brand-primary, #3fa7ff);
+`;
 
-  @media (max-width: 768px) {
-    position: fixed;
-    left: 0;
-    top: 60px;
-    height: calc(100vh - 60px);
-    width: 240px;
-    transform: translateX(-100%);
-    z-index: 999;
-    border-right: none;
-    box-shadow: 3px 0px 15px rgba(0, 0, 0, 0.15);
-    padding-top: 1rem;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    ${({ isOpen }) => isOpen && css`
-      transform: translateX(0);
-    `}
+const CloseBtn = styled.button`
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: block;
+  @media (min-width: 900px) {
+    display: none;
   }
 `;
 
 const NavList = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.2rem;
 `;
 
 const NavItem = styled(NavLink)`
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
-  margin: 0 0.5rem;
-  color: var(--text-secondary);
+  padding: 0.9rem 1.5rem;
+  color: inherit;
   text-decoration: none;
-  font-size: 1rem;
-  font-weight: 500;
-  border-radius: 6px;
+  font-size: 1.05rem;
   border-left: 4px solid transparent;
-  transition: all var(--transition-speed-fast) var(--easing-standard);
-
-  svg {
-    margin-right: 0.8rem;
-    font-size: 1.1rem;
-    min-width: 18px;
-    color: var(--text-secondary);
-    transition: all var(--transition-speed-fast) var(--easing-standard);
-  }
-
-  &:hover {
-    background-color: var(--bg-tertiary);
-    color: var(--text-accent);
-    transform: translateX(3px);
-    
-    svg {
-      color: var(--text-accent);
-    }
-  }
-
-  &.active {
-    background-color: var(--bg-tertiary);
-    color: var(--brand-primary);
-    font-weight: 600;
-    border-left-color: var(--brand-primary);
-    
-    svg {
-      color: var(--brand-primary);
-      transform: scale(1.05);
-    }
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  svg { margin-right: 1rem; font-size: 1.2rem; }
+  &:hover, &.active {
+    background: var(--bg-tertiary, #23293a);
+    color: var(--brand-primary, #3fa7ff);
+    border-left: 4px solid var(--brand-primary, #3fa7ff);
   }
 `;
 
@@ -104,49 +86,16 @@ const menuItems = [
   { to: "/contact", icon: <FaEnvelope />, label: "Contact Us" },
 ];
 
-const Sidebar = ({ isMobileMenuOpen, closeMobileMenu }) => {
-  const location = useLocation();
-
-  // Handle escape key to close mobile menu
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
-        closeMobileMenu();
-      }
-    };
-
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isMobileMenuOpen, closeMobileMenu]);
-
-  // Handle window resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768 && isMobileMenuOpen) {
-        closeMobileMenu();
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isMobileMenuOpen, closeMobileMenu]);
-
-  const handleNavItemClick = () => {
-    if (isMobileMenuOpen && window.innerWidth <= 768) {
-      closeMobileMenu();
-    }
-  };
-
+export default function Sidebar({ open, onClose }) {
   return (
-    <SidebarContainer isOpen={isMobileMenuOpen}>
+    <SidebarContainer open={open}>
+      <SidebarHeader>
+        ChessCon
+        <CloseBtn onClick={onClose} aria-label="Close sidebar">&times;</CloseBtn>
+      </SidebarHeader>
       <NavList>
-        {menuItems.map((item) => (
-          <NavItem
-            key={item.to}
-            to={item.to}
-            onClick={handleNavItemClick}
-            className={({ isActive }) => isActive ? 'active' : ''}
-          >
+        {menuItems.map(item => (
+          <NavItem key={item.to} to={item.to} onClick={onClose}>
             {item.icon}
             {item.label}
           </NavItem>
@@ -154,6 +103,4 @@ const Sidebar = ({ isMobileMenuOpen, closeMobileMenu }) => {
       </NavList>
     </SidebarContainer>
   );
-};
-
-export default Sidebar;
+}
