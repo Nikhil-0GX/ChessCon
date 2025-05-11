@@ -28,27 +28,23 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-primary, #10141c);
   position: relative;
 `;
 
 const MainLayout = styled.div`
   display: flex;
   flex-grow: 1;
-  padding-top: 70px;
-  @media (max-width: 768px) {
-    flex-direction: column;
-    padding-top: 60px;
-  }
 `;
 
 const ContentArea = styled(motion.main)`
   flex-grow: 1;
   padding: 1.5rem;
   overflow-y: auto;
-  background-color: var(--bg-primary);
+  background-color: var(--bg-primary, #10141c);
   position: relative;
   z-index: 1;
+
   @media (max-width: 768px) {
     padding: 1rem;
     transition: filter 0.3s ease-in-out;
@@ -68,6 +64,7 @@ const BackdropOverlay = styled(motion.div)`
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 998;
   display: none;
+
   @media (max-width: 768px) {
     display: ${({ isVisible }) => (isVisible ? 'block' : 'none')};
   }
@@ -101,13 +98,11 @@ function App() {
   // Toggle mobile menu
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(prev => !prev);
-    document.body.classList.toggle('mobile-menu-open');
   };
 
   // Close mobile menu
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
-    document.body.classList.remove('mobile-menu-open');
   };
 
   // Close menu on route change
@@ -122,6 +117,7 @@ function App() {
         closeMobileMenu();
       }
     };
+
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
   }, []);
@@ -150,8 +146,8 @@ function App() {
 
           <MainLayout>
             <Sidebar 
-              open={isMobileMenuOpen} 
-              onClose={closeMobileMenu} 
+              isMobileMenuOpen={isMobileMenuOpen} 
+              closeMobileMenu={closeMobileMenu} 
             />
             
             <BackdropOverlay
