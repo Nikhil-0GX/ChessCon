@@ -1,5 +1,4 @@
-// src/components/Sidebar.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -8,38 +7,34 @@ import {
 } from 'react-icons/fa';
 
 const SidebarContainer = styled.aside`
-  width: 250px; /* Desktop width */
+  width: 250px;
   background-color: var(--bg-sidebar);
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding: 1.5rem 0;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0; /* Prevent sidebar from shrinking if content is wide */
-  
-  /* Desktop Styling: Sticky next to content */
-  position: sticky; 
-  top: 70px; /* Must match desktop Header height */
-  height: calc(100vh - 70px); /* Fill remaining viewport height */
-  overflow-y: auto; /* Allow sidebar content to scroll if it's too long */
+  flex-shrink: 0;
+  position: sticky;
+  top: 70px;
+  height: calc(100vh - 70px);
+  overflow-y: auto;
   border-right: 1px solid var(--border-color);
-  
   transition: transform 0.3s ease-in-out, 
               background-color var(--transition-speed-medium) var(--easing-standard);
 
   @media (max-width: 768px) {
-    /* Mobile Styling: Fixed overlay sliding in from the left */
-    position: fixed; 
+    position: fixed;
     left: 0;
-    top: 60px; /* Must match mobile Header height */
-    height: calc(100vh - 60px); /* Fill remaining viewport height below mobile header */
-    width: 240px; /* Slightly adjusted mobile width */
-    transform: translateX(-100%); /* Hidden by default off-screen to the left */
-    z-index: 999; /* High z-index to be above content but below modals/header menu icon */
-    border-right: none; /* No border when it's an overlay */
-    box-shadow: 3px 0px 15px rgba(0, 0, 0, 0.15); /* Shadow to make it distinct */
-    padding-top: 1rem; /* Adjust padding for mobile */
+    top: 60px;
+    height: calc(100vh - 60px);
+    width: 240px;
+    transform: translateX(-100%);
+    z-index: 999;
+    border-right: none;
+    box-shadow: 3px 0px 15px rgba(0, 0, 0, 0.15);
+    padding-top: 1rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 
-    /* Show sidebar when isOpen (isMobileMenuOpen from App.js) is true */
     ${({ isOpen }) => isOpen && css`
       transform: translateX(0);
     `}
@@ -49,56 +44,53 @@ const SidebarContainer = styled.aside`
 const NavList = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 0.3rem; /* Slightly reduced gap between items */
+  gap: 0.3rem;
 `;
 
 const NavItem = styled(NavLink)`
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.5rem; /* Adjusted padding */
-  margin: 0 0.5rem; /* Horizontal margin to give some breathing room */
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.5rem;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 1rem; /* Slightly smaller for a denser look if needed */
+  font-size: 1rem;
   font-weight: 500;
-  border-radius: 6px; /* Rounded corners for NavItems */
-  border-left: 4px solid transparent; /* Keep for active state indicator */
-  transition: background-color var(--transition-speed-fast) var(--easing-standard), 
-              color var(--transition-speed-fast) var(--easing-standard), 
-              border-left-color var(--transition-speed-fast) var(--easing-standard),
-              transform var(--transition-speed-fast) var(--easing-standard);
+  border-radius: 6px;
+  border-left: 4px solid transparent;
+  transition: all var(--transition-speed-fast) var(--easing-standard);
 
   svg {
-    margin-right: 0.8rem; /* Adjusted icon margin */
-    font-size: 1.1rem; /* Adjusted icon size */
-    min-width: 18px; 
-    color: var(--text-secondary); /* Ensure icons also get themed color */
-    transition: color var(--transition-speed-fast) var(--easing-standard), 
-                transform var(--transition-speed-fast) var(--easing-standard);
+    margin-right: 0.8rem;
+    font-size: 1.1rem;
+    min-width: 18px;
+    color: var(--text-secondary);
+    transition: all var(--transition-speed-fast) var(--easing-standard);
   }
 
   &:hover {
     background-color: var(--bg-tertiary);
     color: var(--text-accent);
-    transform: translateX(3px); /* Slight shift on hover */
+    transform: translateX(3px);
+    
     svg {
-      color: var(--text-accent); /* Icon color change on hover */
+      color: var(--text-accent);
     }
   }
 
   &.active {
-    background-color: var(--bg-tertiary); /* More distinct active background */
-    color: var(--brand-primary); /* Use brand primary for active text */
+    background-color: var(--bg-tertiary);
+    color: var(--brand-primary);
     font-weight: 600;
     border-left-color: var(--brand-primary);
+    
     svg {
-      color: var(--brand-primary); /* Icon color matches active text */
+      color: var(--brand-primary);
       transform: scale(1.05);
     }
   }
 `;
 
-// Menu items definition
 const menuItems = [
   { to: "/", icon: <FaHome />, label: "Home" },
   { to: "/learning", icon: <FaGraduationCap />, label: "Learning Tracks" },
@@ -112,12 +104,33 @@ const menuItems = [
   { to: "/contact", icon: <FaEnvelope />, label: "Contact Us" },
 ];
 
-// Props: isMobileMenuOpen (boolean), closeMobileMenu (function)
 const Sidebar = ({ isMobileMenuOpen, closeMobileMenu }) => {
-  const location = useLocation(); // To determine active link
+  const location = useLocation();
 
-  // This function will be called when a NavItem is clicked.
-  // It ensures the mobile menu closes IF it's currently open AND we are on a mobile device.
+  // Handle escape key to close mobile menu
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isMobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [isMobileMenuOpen, closeMobileMenu]);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768 && isMobileMenuOpen) {
+        closeMobileMenu();
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobileMenuOpen, closeMobileMenu]);
+
   const handleNavItemClick = () => {
     if (isMobileMenuOpen && window.innerWidth <= 768) {
       closeMobileMenu();
@@ -125,16 +138,14 @@ const Sidebar = ({ isMobileMenuOpen, closeMobileMenu }) => {
   };
 
   return (
-    // The `isOpen` prop is passed to the styled SidebarContainer to control its visibility on mobile
     <SidebarContainer isOpen={isMobileMenuOpen}>
       <NavList>
         {menuItems.map((item) => (
           <NavItem
             key={item.to}
             to={item.to}
-            // `isActive` prop is automatically handled by NavLink for `className="active"`
-            // className={location.pathname === item.to ? "active" : ""} // NavLink handles this better
-            onClick={handleNavItemClick} // Call our handler to close menu on mobile
+            onClick={handleNavItemClick}
+            className={({ isActive }) => isActive ? 'active' : ''}
           >
             {item.icon}
             {item.label}

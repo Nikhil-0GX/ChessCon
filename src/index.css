@@ -1,12 +1,6 @@
-/* src/index.css */
-
-/* FONT IMPORTS (from index.html, but good to note here)
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Slab:wght@400;700&display=swap');
-*/
-
 :root {
   --font-primary: 'Poppins', sans-serif;
-  --font-secondary: 'Roboto Slab', serif; /* More classic for headings */
+  --font-secondary: 'Roboto Slab', serif;
 
   /* Timing for transitions */
   --transition-speed-fast: 0.2s;
@@ -22,7 +16,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   transition: background-color var(--transition-speed-medium) var(--easing-standard), 
               color var(--transition-speed-medium) var(--easing-standard);
-  line-height: 1.6; /* Default line height for readability */
+  line-height: 1.6;
 }
 
 * {
@@ -61,6 +55,10 @@ body[data-theme="light"] {
   --brand-highlight: #b58900; /* Solarized Yellow/Gold for highlights */
   --link-color: #0056b3;     /* A good readable link blue */
   --link-color-inline: #0069d9; /* Slightly brighter for inline text links */
+  
+  --brand-primary-rgb: 0, 90, 141;     /* For --brand-primary: #005a8D */
+  --brand-secondary-rgb: 40, 167, 69;  /* Example success green */
+  --brand-highlight-rgb: 220, 53, 69;  /* Example error red */
 
   *::-webkit-scrollbar-thumb {
     background-color: #a59379; /* Muted brown scrollbar thumb */
@@ -73,32 +71,10 @@ body[data-theme="light"] {
   scrollbar-color: #a59379 #e8e0d0;
 }
 
-/* src/index.css */
-
-/* ---- LIGHT THEME: "Scholarly Parchment" ---- */
-body[data-theme="light"] {
-  /* ... existing variables ... */
-  --brand-primary-rgb: 0, 90, 141;     /* For --brand-primary: #005a8D */
-  --brand-secondary-rgb: 40, 167, 69;  /* Example success green */
-  --brand-highlight-rgb: 220, 53, 69;  /* Example error red */
-  /* ... */
-}
-
-/* ---- DARK THEME: "Glassmorphic Aurora Night" ---- */
-body[data-theme="dark"] {
-  /* ... existing variables ... */
-  --brand-primary-rgb: 121, 192, 255;  /* For --brand-primary: #79c0ff */
-  --brand-secondary-rgb: 107, 227, 160;/* Example success mint/green for dark theme */
-  --brand-highlight-rgb: 247, 120, 186;/* For --brand-highlight: #F778BA (or a more distinct error red if preferred) */
-  /* ... */
-}
 /* ---- DARK THEME: "Glassmorphic Aurora Night" ---- */
 body[data-theme="dark"] {
   /* Palette: Deep space blues, ethereal purples, glowing cyans, subtle pinks */
   --bg-primary: #0d1117; /* Very dark blue, almost black (GitHub Dark) */
-  /* Aurora background for primary - apply to a ::before pseudo-element or a wrapper */
-  /* This requires JS or specific component styling for the animated gradient */
-  
   --bg-secondary: rgba(22, 27, 34, 0.75);  /* Translucent card background (Glassmorphism base) */
   --bg-tertiary: rgba(30, 36, 44, 0.6);    /* Slightly different translucency */
   --bg-header: rgba(13, 17, 23, 0.85);    /* Header with more opacity or solid dark */
@@ -122,10 +98,10 @@ body[data-theme="dark"] {
   --brand-highlight: #F778BA;  /* Neon Pink/Magenta */
   --link-color: #79c0ff;      /* Sky Blue for links */
   --link-color-inline: #94D3FF; /* Lighter blue for inline */
-
-  /* For Glassmorphism on cards (apply to --bg-secondary, --bg-tertiary etc.) */
-  /* backdrop-filter: blur(10px); - apply this in styled-components if needed */
-  /* -webkit-backdrop-filter: blur(10px); */
+  
+  --brand-primary-rgb: 121, 192, 255;  /* For --brand-primary: #79c0ff */
+  --brand-secondary-rgb: 107, 227, 160;/* Example success mint/green for dark theme */
+  --brand-highlight-rgb: 247, 120, 186;/* For --brand-highlight: #F778BA */
 
   *::-webkit-scrollbar-thumb {
     background-color: #484f58; /* GitHub Dark scrollbar thumb */
@@ -231,39 +207,7 @@ h4 { font-size: 1.3rem; }
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-
-/* Optional: Aurora background effect for dark theme body */
-/* This is more complex and best applied with JS or directly on a full-page wrapper for performance */
-/* body[data-theme="dark"]::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(120deg, 
-    hsla(220, 80%, 20%, 0.7), 
-    hsla(270, 70%, 15%, 0.6), 
-    hsla(190, 80%, 25%, 0.5)
-  );
-  animation: aurora-flow 20s ease-in-out infinite alternate;
-  z-index: -1; // Behind content
-  opacity: 0.6; // Soften it
+/* Mobile menu state class */
+body.mobile-menu-open {
+  overflow: hidden; /* Prevent scrolling when menu is open */
 }
-
-@keyframes aurora-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-} */
-
-/* Glassmorphism for cards in dark theme - apply this to card components using styled-components */
-/*
-  Example for a card component in styled-components:
-  const Card = styled.div`
-    background: var(--bg-secondary); // This is your translucent rgba color
-    ${props => props.theme.activeTheme === 'dark' && `
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border-color); // Translucent border
-    `}
-    // ... other card styles
-  `;
-*/

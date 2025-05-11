@@ -1,58 +1,82 @@
-// src/components/AnimatedCard.js
 import React from 'react';
-import styled, { css } from 'styled-components'; // Import css
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useTheme } from '../ThemeContext'; // Assuming you have ThemeContext
+import { Link } from 'react-router-dom';
 
-const CardWrapper = styled(motion.div)`
-  background-color: var(--bg-secondary);
-  border-radius: 12px; /* Or your preferred radius */
-  padding: 1.5rem;
+const Card = styled(motion.div)`
+  background: var(--bg-secondary);
+  padding: 2rem;
+  border-radius: 12px;
   box-shadow: var(--card-shadow);
-  transition: background-color 0.3s ease, box-shadow 0.2s ease, transform 0.2s ease;
-  /* border: 1px solid var(--border-color); // Standard border */
-  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     box-shadow: var(--card-hover-shadow);
-    transform: translateY(-3px);
+    transform: translateY(-5px);
   }
+`;
 
-  @media (max-width: 768px) {
-    padding: 1.2rem;
+const IconWrapper = styled.div`
+  font-size: 2rem;
+  color: var(--brand-primary);
+  margin-bottom: 1rem;
+`;
+
+const CardTitle = styled.h3`
+  color: var(--text-accent);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+`;
+
+const CardDescription = styled.p`
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+`;
+
+const CardLink = styled(Link)`
+  color: var(--brand-primary);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    color: var(--brand-highlight);
   }
-
-  /* Conditional Glassmorphism for dark theme */
-  ${({ activeTheme }) => // Pass activeTheme as a prop
-    activeTheme === 'dark' &&
-    css`
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid var(--border-color); /* Use the translucent border for dark theme */
-      background-color: var(--bg-secondary); /* Ensure this is your translucent RGBA */
-    `}
 `;
 
 const cardVariants = {
-  // ... (keep your existing variants)
+  hidden: { 
+    opacity: 0,
+    y: 20
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
 };
 
-const AnimatedCard = ({ children, className, customStaggerIndex, ...props }) => {
-  const { theme } = useTheme(); // Get current theme
-
+const AnimatedCard = ({ icon, title, description, link, delay = 0 }) => {
   return (
-    <CardWrapper
-      className={className}
+    <Card
       variants={cardVariants}
       initial="hidden"
       animate="visible"
-      whileHover="hover"
-      custom={customStaggerIndex}
-      activeTheme={theme} // Pass theme to styled-component
-      {...props}
+      transition={{ delay }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
     >
-      {children}
-    </CardWrapper>
+      <IconWrapper>{icon}</IconWrapper>
+      <CardTitle>{title}</CardTitle>
+      <CardDescription>{description}</CardDescription>
+      <CardLink to={link}>Learn More →</CardLink>
+    </Card>
   );
 };
 
